@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="2018.03.21" orientation="orthogonal" renderorder="left-up" width="25" height="18" tilewidth="32" tileheight="32" infinite="0" nextobjectid="7">
+ <tileset firstgid="1" source="C:/tiled/examples/desert.tsx"/>
+ <layer name="Слой тайлов 1" width="25" height="18">
+  <data encoding="base64" compression="zlib">
+   eJyVk7tuxTAMQ70VbdF3i96hjT3Z2aL//7p6MAGCV9JNB8J5iceU4q2UsgW6n3oI9DhlSe1ZMeNz6usfjBE8qwnjZ+pXGOrRE8Yu93XpVq/wfSNGd9iekOdt6j3QhzCOtbbAk3Noxuepl6lX2mslgTFo9fa8r9WozhJGp2uj/SPPIf3gHLau94SBWviDge85h5XrLKhhfsSATJjcwy413owsYGC+6svz4Ww8a82pDH4PH1xXeZedSxOOlwNzP5Z3o/rmMHhW2rMaMNCv7qiV/CwaeUczxz6RYVAdnmvfs3M+AsYQHzDwL2g/7m7oKemV/h+e/7bqz8hjHI6fp++TupTrc3WW8Qcg9jNX
+  </data>
+ </layer>
+ <objectgroup name="Слой объектов 1">
+  <object id="1" name="A" x="2.66667" y="532">
+   <point/>
+  </object>
+  <object id="2" name="B" x="306.667" y="529.333">
+   <point/>
+  </object>
+  <object id="3" name="C" x="304" y="145.333">
+   <point/>
+  </object>
+  <object id="4" x="528.833" y="7.83333" width="179.667" height="19">
+   <text wrap="1">Ошеломительная игра</text>
+  </object>
+ </objectgroup>
+</map>
