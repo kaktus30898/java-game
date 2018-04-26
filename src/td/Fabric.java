@@ -5,6 +5,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import td.Components.Movement;
+import td.Components.MovementToTarget;
 
 public class Fabric implements EntityFactory {
 
@@ -18,32 +20,12 @@ public class Fabric implements EntityFactory {
 
     private Entity enemy = null;
 
-    @Spawns("Enemy")
-    public Entity SpawnEnemy(SpawnData data) {
-        enemy = Entities.builder()
-                .type(Game.EntityType.Enemy)
-                .at(data.getX() - 10, data.getY() - 10)
-                .viewFromNode(new Circle(10, Color.rgb(0xe5, 0x73, 0x73)))
-                .with(new Movement(target.subtract(10, 10), speed))
-                .build();
-        return enemy;
-    }
-
     @Spawns("EnemyFabric")
     public Entity SpawnFabric(SpawnData data) {
         return Entities.builder()
                 .type(Game.EntityType.Fabric)
                 .at(data.getX() - 25, data.getY() - 25)
                 .viewFromNode(new Circle(25, Color.rgb(0xba, 0x68, 0xc8)))
-                .build();
-    }
-
-    @Spawns("Home")
-    public Entity SpawnHome(SpawnData data) {
-        return Entities.builder()
-                .type(Game.EntityType.Fabric)
-                .at(data.getX() - 25, data.getY() - 25)
-                .viewFromNode(new Circle(25, Color.rgb(0x7c, 0xb3, 0x42)))
                 .build();
     }
 
