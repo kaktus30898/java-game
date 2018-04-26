@@ -1,4 +1,4 @@
-package td;
+package td.Components;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
@@ -10,7 +10,7 @@ public class MovementToTarget extends Component {
     private Entity target;
     private double speed;
 
-    MovementToTarget(Entity target, double speed) {
+    public MovementToTarget(Entity target, double speed) {
         this.target = target;
         this.speed = speed;
     }

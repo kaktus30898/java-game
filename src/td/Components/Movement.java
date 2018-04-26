@@ -1,4 +1,4 @@
-package td;
+package td.Components;
 
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.PositionComponent;
@@ -8,20 +8,25 @@ public class Movement extends Component {
 
     private Point2D target;
     private double speed;
+    private boolean done = false;
+    private Runnable onDone;
 
-    Movement(Point2D target, double speed) {
+    public Movement(Point2D target, double speed, Runnable onDone) {
         this.target = target;
         this.speed = speed;
+        this.onDone = onDone;
     }
 
     private PositionComponent position;
 
     @Override
     public void onUpdate(double tpf) {
+        if (done) return;
         final Point2D currentPosition = position.getValue();
         final Point2D differenceVector = target.subtract(currentPosition);
         if (differenceVector.magnitude() < 1) {
-//            System.out.println("Movement is done!");
+            done = true;
+            onDone.run();
         } else {
             final Point2D movementVector = differenceVector.multiply(
                     speed * tpf / differenceVector.magnitude()
