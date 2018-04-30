@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.settings.GameSettings;
+import com.almasb.fxgl.time.Timer;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Point2D;
@@ -13,11 +14,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import td.Entities.Enemy;
-import td.Entities.Home;
+import td.Components.Movement;
+import td.Entities.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 
 public class Game extends GameApplication {
@@ -27,7 +29,7 @@ public class Game extends GameApplication {
         Fabric,
         TowerPosition,
         Tower,
-        TowerBullet,
+        Bullet,
         Home,
     }
 
@@ -38,9 +40,9 @@ public class Game extends GameApplication {
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(600);
-        settings.setHeight(200);
+        settings.setHeight(300);
         settings.setTitle("TD");
-        settings.setVersion("0.0.1");
+        settings.setVersion("0.0.2");
     }
 
     private Home home;
@@ -48,21 +50,14 @@ public class Game extends GameApplication {
     @Override
     protected void initGame() {
         final GameWorld world = getGameWorld();
-        world.addEntityFactory(new Fabric(
-                new Point2D(500, 100),
-                50
-        ));
         for (int i = 100; i <= 500; i += 10)
-            world.spawn("RoadElement", i, 100);
-        world.spawn("EnemyFabric", 100, 100);
+            RoadElement.SpawnRoad(world, i, 100);
+        EnemyFabric fabric = new EnemyFabric(world, 100, 100);
 
         home = new Home(
                 Home.SpawnHome(world, 500, 100),
                 () -> {
                     getMasterTimer().clear();
-                    for (Entity enemy : world.getEntitiesByType(EntityType.Enemy)) {
-                        enemy.removeFromWorld();
-                    }
                     Text gameOver = new Text();
                     gameOver.setText("Game over");
                     gameOver.setTranslateX(250);
@@ -71,10 +66,20 @@ public class Game extends GameApplication {
                 }
         );
 
-        getMasterTimer().runAtInterval(() -> Enemy.SpawnEnemy(world, 120, 100, home), Duration.millis(900));
+        Timer timer = getMasterTimer();
 
-//        world.spawn("Tower", 250, 150);
-//        world.spawn("TowerBullet", 250, 150);
+        timer.runAtInterval(() -> fabric.spawnEnemy(home), Duration.millis(1000));
+
+        Tower tower = new Tower(world, 250, 150);
+
+        timer.runAtInterval(() -> {
+            List<Entity> enemies = world.getEntitiesByType(EntityType.Enemy);
+            if (enemies.isEmpty()) return;
+            int index = (int) Math.floor(Math.random()*enemies.size());
+            Entity enemy = enemies.get(index);
+            if (enemy != null)
+                tower.shoot(enemy);
+        }, Duration.millis(100));
     }
 
     @Override
