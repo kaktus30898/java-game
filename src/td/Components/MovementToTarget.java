@@ -3,26 +3,42 @@ package td.Components;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.PositionComponent;
+import com.almasb.fxgl.util.Optional;
 import javafx.geometry.Point2D;
 
 public class MovementToTarget extends Component {
 
     private Entity target;
     private double speed;
+    private boolean done = false;
+    private Runnable onDone;
 
-    public MovementToTarget(Entity target, double speed) {
+    public MovementToTarget(Entity target, double speed, Runnable onDone) {
         this.target = target;
         this.speed = speed;
+        this.onDone = onDone;
+    }
+
+    private Point2D getTargetPosition() {
+        return target.getComponent(Target.class).getTarget();
     }
 
     private PositionComponent position;
+    private Target self;
 
     @Override
     public void onUpdate(double tpf) {
-        final Point2D currentPosition = position.getValue();
-        final Point2D differenceVector = target.getPosition().subtract(currentPosition);
-        if (differenceVector.magnitude() < 1) {
-//            System.out.println("Movement is done!");
+        if (done) return;
+        if (!target.isActive()) {
+            done = true;
+            onDone.run();
+            return;
+        }
+        final Point2D currentPosition = self.getTarget();
+        final Point2D differenceVector = getTargetPosition().subtract(currentPosition);
+        if (differenceVector.magnitude() < 2) {
+            done = true;
+            onDone.run();
         } else {
             final Point2D movementVector = differenceVector.multiply(
                     speed * tpf / differenceVector.magnitude()
