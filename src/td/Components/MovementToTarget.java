@@ -3,15 +3,14 @@ package td.Components;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.PositionComponent;
-import com.almasb.fxgl.util.Optional;
 import javafx.geometry.Point2D;
 
 public class MovementToTarget extends Component {
 
-    private Entity target;
-    private double speed;
+    private final Entity target;
+    private final double speed;
     private boolean done = false;
-    private Runnable onDone;
+    private final Runnable onDone;
 
     public MovementToTarget(Entity target, double speed, Runnable onDone) {
         this.target = target;
@@ -20,11 +19,11 @@ public class MovementToTarget extends Component {
     }
 
     private Point2D getTargetPosition() {
-        return target.getComponent(Target.class).getTarget();
+        return target.getComponent(Shift.class).getTarget();
     }
 
     private PositionComponent position;
-    private Target self;
+    private Shift self;
 
     @Override
     public void onUpdate(double tpf) {
