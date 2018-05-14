@@ -9,14 +9,14 @@ import td.Components.Shift;
 import td.Game;
 
 public class Enemy extends Entity {
-    public Enemy(final Home target) {
+    public Enemy(final MovementToTarget.MovementPath path, final Home target) {
         super();
 
         setType(Game.EntityType.Enemy);
         setView(new Circle(10, Color.rgb(0xe5, 0x73, 0x73)));
         addComponent(new Shift(10));
         addComponent(new MovementToTarget(
-                target,
+                path,
                 60,
                 () -> {
                     if (target.isActive())

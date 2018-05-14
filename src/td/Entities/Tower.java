@@ -20,7 +20,7 @@ public class Tower extends Entity {
         setView(new Circle(15, Color.rgb(0x78, 0x90, 0x9c)));
         addComponent(new Shift(15));
 
-        context.runAtInterval(this::makeShoot, Duration.millis(75));
+        context.runAtInterval(this::makeShoot, Duration.millis(50));
     }
 
     public void shoot(Entity target) {

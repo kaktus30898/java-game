@@ -16,7 +16,7 @@ public class Bullet extends Entity {
         setView(new Circle(2, Color.rgb(0x00, 0x73, 0x73)));
         addComponent(new Shift(2));
         addComponent(new MovementToTarget(
-                target,
+                new MovementToTarget.MovementPathBuilder(target).build(),
                 250,
                 () -> {
                     if (target.isActive())
