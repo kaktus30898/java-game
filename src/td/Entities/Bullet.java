@@ -1,6 +1,7 @@
 package td.Entities;
 
 import com.almasb.fxgl.entity.Entity;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import td.Components.Hittable;
@@ -13,7 +14,16 @@ public class Bullet extends Entity {
         super();
 
         setType(Game.EntityType.Bullet);
-        setView(new Circle(2, Color.rgb(0x00, 0x73, 0x73)));
+        final Group view = new Group();
+        final Circle outerCircle = new Circle(5, Color.BLACK);
+        outerCircle.setTranslateX(5);
+        outerCircle.setTranslateY(5);
+        view.getChildren().add(outerCircle);
+        final Circle innerCircle = new Circle(3, Color.RED);
+        innerCircle.setTranslateX(5);
+        innerCircle.setTranslateY(5);
+        view.getChildren().add(innerCircle);
+        setView(view);
         addComponent(new Shift(2));
         addComponent(new MovementToTarget(
                 new MovementToTarget.MovementPathBuilder(target).build(),
