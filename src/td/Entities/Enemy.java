@@ -8,13 +8,24 @@ import td.Components.MovementToTarget;
 import td.Components.Shift;
 import td.Game;
 
+/**
+ * Сущность "Враг" движется по заданному маршруту.
+ * По достижении цели "бьёт" её, после чего умирает сам.
+ * "Врага" так же можно "бить" и он может умирать.
+ */
 public class Enemy extends Entity {
-    public Enemy(final MovementToTarget.MovementPath path, final Home target) {
+    /**
+     * @param path Путь следования "врага".
+     * @param target "Цель" врага.
+     * @param hitPoints Количество очков здоровья "врага".
+     */
+    public Enemy(final MovementToTarget.MovementPath path, final Home target, final int hitPoints) {
         super();
 
         setType(Game.EntityType.Enemy);
-        setView(new Circle(10, Color.rgb(0xe5, 0x73, 0x73)));
-        addComponent(new Shift(10));
+        final int radius = 10 + (hitPoints - 10) / 100;
+        setView(new Circle(radius, Color.rgb(0xe5, 0x73, 0x73)));
+        addComponent(new Shift(radius));
         addComponent(new MovementToTarget(
                 path,
                 60,
@@ -24,6 +35,6 @@ public class Enemy extends Entity {
                     removeFromWorld();
                 }
         ));
-        addComponent(new Hittable(this::removeFromWorld));
+        addComponent(new Hittable(hitPoints, this::removeFromWorld));
     }
 }

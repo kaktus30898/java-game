@@ -4,6 +4,13 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class List {
+    /**
+     * Вспомогательная функция, достающая случайный эллемент коллекции.
+     *
+     * @param collection Коллекция-источник данных.
+     * @param <T> Тип элементов коллекции.
+     * @return Случайный элемент коллекции.
+     */
     public static <T> T getRandomElement(Collection<T> collection) {
         if (collection.isEmpty())
             return null;

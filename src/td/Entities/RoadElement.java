@@ -8,6 +8,9 @@ import td.Components.Shift;
 import td.Game;
 import td.GameContext;
 
+/**
+ * Сущность "Элемент дороги". Ничего не делает.
+ */
 public class RoadElement extends Entity {
     public RoadElement() {
         super();
@@ -17,6 +20,14 @@ public class RoadElement extends Entity {
         addComponent(new Shift(5));
     }
 
+    /**
+     * Вспомогательная функция, которая создаёт столько элементов дороги,
+     * чтобы покрыть весь отрезок от точки start, до точки end.
+     *
+     * @param context Игровой контекст, при помощи поторого элементы будут помещены в игру.
+     * @param start Точка начала.
+     * @param end Точка конца.
+     */
     public static void DrawRoad(GameContext context, Point2D start, Point2D end) {
         double x = start.getX();
         final double endX = end.getX();

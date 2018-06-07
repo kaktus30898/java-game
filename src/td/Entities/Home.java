@@ -7,6 +7,9 @@ import td.Components.Hittable;
 import td.Components.Shift;
 import td.Game;
 
+/**
+ * Сущность "Дом". Создан, чтобы умирать.
+ */
 public class Home extends Entity {
     public Home(final Runnable onDead) {
         super();
@@ -14,6 +17,6 @@ public class Home extends Entity {
         setType(Game.EntityType.Home);
         setView(new Circle(25, Color.rgb(0x7c, 0xb3, 0x42)));
         addComponent(new Shift(25));
-        addComponent(new Hittable(onDead));
+        addComponent(new Hittable(12, onDead));
     }
 }

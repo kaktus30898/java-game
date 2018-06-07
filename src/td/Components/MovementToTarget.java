@@ -7,8 +7,15 @@ import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
 
+/**
+ * Компонент MovementToTarget реализует движение.
+ */
 public class MovementToTarget extends Component {
 
+    /**
+     * Вспомогательный класс MovementPathBuilder нужен для построения пути,
+     * по которому будет двигаться объект.
+     */
     public static class MovementPathBuilder {
         private final ArrayList<Object> components = new ArrayList<>();
 
@@ -30,6 +37,9 @@ public class MovementToTarget extends Component {
             components.add(target);
         }
 
+        /**
+         * @return Построенний объект пути, в который скопированы все точки маршрута.
+         */
         public MovementPath build() {
             final ArrayList<Object> componentsCopy = new ArrayList<>(components.size());
             componentsCopy.addAll(components);
@@ -37,6 +47,9 @@ public class MovementToTarget extends Component {
         }
     }
 
+    /**
+     * Вспомогательный класс MovementPath служит для хранения маршрута, по которому движется объект и его состояния.
+     */
     public static class MovementPath {
         private final ArrayList<Object> components;
 
@@ -44,6 +57,13 @@ public class MovementToTarget extends Component {
             this.components = components;
         }
 
+        /**
+         * @return Положение текущей "цели".
+         *      Если "цель" точка - возвращает точку.
+         *      Если "цель" сущность - возвращает результат вызова Shift::getTarget().
+         *      Если "цель" не активна (удалена из игрового мира) или == null -
+         *      удаляет её из списка и проводит проверку заново.
+         */
         public Point2D getCurrentTargetPosition() {
             while ((!components.isEmpty()) && (components.get(0) == null))
                 components.remove(0);
@@ -65,6 +85,11 @@ public class MovementToTarget extends Component {
             }
         }
 
+        /**
+         * Удаляет "цель" из списка для следования к следующей.
+         *
+         * @return true, если ещё остались цели и false, если список оказался пуст.
+         */
         public boolean nextTarget() {
             if (components.isEmpty())
                 return false;
@@ -78,6 +103,11 @@ public class MovementToTarget extends Component {
     private boolean done = false;
     private final Runnable onDone;
 
+    /**
+     * @param path Путь следования объекта
+     * @param speed Скорость движения
+     * @param onDone Замыкание, которое будет вызвано при достижении объектом цели
+     */
     public MovementToTarget(MovementPath path, double speed, Runnable onDone) {
         this.path = path;
         this.speed = speed;
@@ -87,6 +117,14 @@ public class MovementToTarget extends Component {
     private PositionComponent position;
     private Shift self;
 
+    /**
+     * Метод onUpdate вызывается движком, чтобы изменить состояние объекта.
+     * Внутри вычисляется вектор от объекта до "цели", которому задаётся новая длина, равная tpf * скорость.
+     * Затем объект двигается согласно вычисленному вектору.
+     * Если объект достиг цели, вызывается замыкание.
+     *
+     * @param tpf Количество времени, которое прошло с последнего изменения объекта
+     */
     @Override
     public void onUpdate(double tpf) {
         if (done) return;
@@ -98,7 +136,7 @@ public class MovementToTarget extends Component {
         }
         final Point2D currentPosition = self.getTarget();
         final Point2D differenceVector = targetPosition.subtract(currentPosition);
-        if (differenceVector.magnitude() < 2) {
+        if (differenceVector.magnitude() < 5) {
             if (!path.nextTarget()) {
                 done = true;
                 onDone.run();
