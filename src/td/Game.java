@@ -39,7 +39,7 @@ public class Game extends GameApplication {
      */
     @Override
     protected void initSettings(GameSettings settings) {
-        settings.setWidth(650);
+        settings.setWidth(750);
         settings.setHeight(450);
         settings.setTitle("TD");
         settings.setVersion("0.0.4");

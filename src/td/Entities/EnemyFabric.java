@@ -18,7 +18,7 @@ public class EnemyFabric extends Entity {
     private final MovementPathBuilder[] pathBuilders;
     private final Home target;
     private double hitPoints = 10;
-    private double chanse = 1.0;
+    private double chance = 1.0;
 
     public EnemyFabric(final GameContext context, final MovementPathBuilder[] pathBuilders, final Home target) {
         super();
@@ -34,11 +34,11 @@ public class EnemyFabric extends Entity {
     }
 
     public void spawnEnemy() {
-        if (Math.random() <= chanse) {
+        if (Math.random() <= chance) {
             final int road = (int) Math.floor(Math.random() * pathBuilders.length);
             context.spawn(new Enemy(pathBuilders[road].build(), target, (int) hitPoints), getComponent(Shift.class).getTarget());
             hitPoints += 5;
-            chanse *= 0.999;
+            chance *= 0.999;
         }
     }
 }
